@@ -22,3 +22,21 @@ class Solution:
         
         dfs(root)
         return res[0]
+
+# Break out of recursive for optimization
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        def dfs(root):
+            if not root:
+                return 0
+            
+            l = dfs(root.left)
+            r = dfs(root.right)
+            if abs(l - r) > 1:
+                raise ValueError
+            return max(l, r) + 1
+        try:
+            dfs(root)
+        except ValueError:
+            return False
+        return True
