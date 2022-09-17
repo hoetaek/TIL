@@ -1,6 +1,7 @@
 import heapq
 from itertools import combinations
-
+from collections import defaultdict
+from typing import List
 
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
@@ -44,14 +45,47 @@ class Solution:
         x1, y1 = p1
         x2, y2 = p2
         return abs(x1 - x2) + abs(y1 - y2)
+
+
+import heapq
+from itertools import combinations
+
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        minHeap = []
+        points = [tuple(i) for i in points]
+        # for i in range(1, len(points) + 1):
+        #     adj[i] = []
+        adj = defaultdict(list)
+        nodes = [i for i in combinations(points, 2)]
+        for n1, n2 in nodes:
+            weight = self.get_distance(n1, n2)
+            heapq.heappush(minHeap, [weight, n1, n2])
+
+        unionFind = UnionFind(points)
+        mst = []
+        while len(mst) < len(points) - 1:
+            # print(minHeap)
+            # print(mst)
+            weight, n1, n2 = heapq.heappop(minHeap)
+            if not unionFind.union(n1, n2):
+                continue
+            mst.append(weight)
+        return sum(mst)
+
+        
+    def get_distance(self, p1, p2):
+        x1, y1 = p1
+        x2, y2 = p2
+        return abs(x1 - x2) + abs(y1 - y2)
     
 class UnionFind:
-    def __init__(self, n):
-        self.par = {}
-        self.rank = {}
+    def __init__(self, points):
+        self.par = defaultdict(tuple)
+        self.rank = defaultdict(int)
 
-        for i in range(1, n + 1):
-            self.par[i] = i
+        for i in range(len(points)):
+            self.par[points[i]] = points[i]
             self.rank[i] = 0
     
     # Find parent of n, with path compression.
@@ -64,6 +98,8 @@ class UnionFind:
 
     def union(self, n1, n2):
         p1, p2 = self.find(n1), self.find(n2)
+        # print("-" * 40, "union")
+        # print(p1, p2)
         if p1 == p2:
             return False
         
