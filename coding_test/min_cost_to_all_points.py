@@ -5,7 +5,6 @@ from typing import List
 
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
-        visited = {}
         adj = defaultdict(list)
         
         points = [tuple(i) for i in points]
@@ -54,9 +53,7 @@ class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
         minHeap = []
         points = [tuple(i) for i in points]
-        # for i in range(1, len(points) + 1):
-        #     adj[i] = []
-        adj = defaultdict(list)
+ 
         nodes = [i for i in combinations(points, 2)]
         for n1, n2 in nodes:
             weight = self.get_distance(n1, n2)
