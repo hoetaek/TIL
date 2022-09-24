@@ -1,7 +1,8 @@
-import heapq
-from itertools import combinations
 from collections import defaultdict
 from typing import List
+
+import heapq
+from itertools import combinations
 
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
